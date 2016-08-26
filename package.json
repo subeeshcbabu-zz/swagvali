@@ -27,6 +27,7 @@
   "homepage": "https://github.com/subeeshcbabu/openapi-param-validator#readme",
   "dependencies": {
     "co": "^4.6.0",
+    "is-my-json-valid": "^2.13.1",
     "swagger-parser": "^3.4.1"
   },
   "devDependencies": {
