@@ -23,14 +23,16 @@ Tape('Validators', t => {
             },
             name: 'doggie',
             photoUrls: [ 'KFIazYOx', 'rSAIQab' ],
-            tags: [ {
-                id: -8756358623002624,
-                name: 'iWD'
-            },
-            {
-                id: -2362820784029696,
-                name: 'BpzO'
-            } ],
+            tags: [
+                {
+                    id: -8756358623002624,
+                    name: 'iWD'
+                },
+                {
+                    id: -2362820784029696,
+                    name: 'BpzO'
+                }
+            ],
             status: 'TFcPSI'
         };
 
@@ -49,8 +51,8 @@ Tape('Validators', t => {
                 let validator = param.validator;
                 let resp = validator.call(null, mock);
                 assert.ok(resp, `OK Param Validation for ${path} - ${operation} - body`);
-                assert.ok(resp.status, `OK validation status`);
-                assert.error(resp.errors, `No validation errors`);
+                assert.ok(resp.status, 'OK validation status');
+                assert.error(resp.errors, 'No validation errors');
                 assert.end();
             })
             .catch(err => {
@@ -77,7 +79,7 @@ Tape('Validators', t => {
                             if (!parameters) {
                                 return;
                             }
-                            for (var i = 0; i < parameters.length; i++) {
+                            for (let i = 0; i < parameters.length; i++) {
 
                                 let param = parameters[i];
                                 let paramSpec = param.parameter;
@@ -86,17 +88,17 @@ Tape('Validators', t => {
                                 //Fetch the mock
                                 let mockParams = mock[path][operation]['parameters'][paramSpec.in];
                                 let mockParam;
-                                for (var i = 0; i < mockParams.length; i++) {
-                                    if (mockParams[i].name === paramSpec.name) {
-                                        mockParam = mockParams[i];
+                                for (let j = 0; j < mockParams.length; j++) {
+                                    if (mockParams[j].name === paramSpec.name) {
+                                        mockParam = mockParams[j];
                                     }
                                 }
                                 let resp = validator.call(null, mockParam && mockParam.value);
                                 assert.ok(resp, `OK Param Validation for ${path} - ${operation} - ${paramSpec.name}`);
-                                assert.ok(resp.status, `OK validation status`);
-                                assert.error(resp.errors, `No validation errors`);
+                                assert.ok(resp.status, 'OK validation status');
+                                assert.error(resp.errors, 'No validation errors');
                             }
-                        })
+                        });
                     });
                     assert.end();
                 });
@@ -127,8 +129,8 @@ Tape('Validators', t => {
                 let validator = param.validator;
                 //Empty input
                 let resp = validator.call(null, {});
-                assert.notOk(resp.status, `false validation status`);
-                assert.ok(resp.errors, `OK validation errors`);
+                assert.notOk(resp.status, 'false validation status');
+                assert.ok(resp.errors, 'OK validation errors');
                 //Required check
                 let mock = {
                     id: -402127969058816,
@@ -138,8 +140,8 @@ Tape('Validators', t => {
                     }
                 };
                 resp = validator.call(null, mock);
-                assert.notOk(resp.status, `false validation status`);
-                assert.ok(resp.errors, `OK validation errors`);
+                assert.notOk(resp.status, 'false validation status');
+                assert.ok(resp.errors, 'OK validation errors');
 
                 //Required check
                 mock = {
@@ -147,8 +149,8 @@ Tape('Validators', t => {
                     photoUrls: []
                 };
                 resp = validator.call(null, mock);
-                assert.ok(resp.status, `OK validation status`);
-                assert.error(resp.errors, `No validation errors`);
+                assert.ok(resp.status, 'OK validation status');
+                assert.error(resp.errors, 'No validation errors');
 
                 assert.end();
 
