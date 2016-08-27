@@ -73,7 +73,10 @@ Tape('Validators', t => {
                 mockgen.parameters({}, function (error, mock) {
                     Object.keys(res).forEach(path => {
                         Object.keys(res[path]).forEach(operation => {
-                            let parameters = res[path][operation];
+                            let parameters = res[path][operation]['parameters'];
+                            if (!parameters) {
+                                return;
+                            }
                             for (var i = 0; i < parameters.length; i++) {
 
                                 let param = parameters[i];
