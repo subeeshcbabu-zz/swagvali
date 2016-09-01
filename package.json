@@ -4,9 +4,9 @@
   "description": "OpenApi (Swagger) request parameter validator ",
   "main": "lib/index.js",
   "scripts": {
-    "test": "tape test/*.js",
+    "test": "ava test/*.js --tap",
     "lint": "eslint .",
-    "cover": "istanbul cover tape -- test/*.js"
+    "cover": "istanbul cover ava -- test/*.js --tap"
   },
   "repository": {
     "type": "git",
@@ -33,9 +33,9 @@
     "swagger-parser": "^3.4.1"
   },
   "devDependencies": {
+    "ava": "^0.16.0",
     "eslint": "^3.4.0",
     "istanbul": "^0.4.5",
-    "swagmock": "0.0.3",
-    "tape": "^4.6.0"
+    "swagmock": "0.0.3"
   }
 }

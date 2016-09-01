@@ -1,155 +1,135 @@
-const Tape = require('tape');
+const Test = require('ava');
 const Validators = require('../lib');
 
-Tape('Validators for a path and an operations', t => {
+let api = 'https://raw.githubusercontent.com/subeeshcbabu/swaggerize-examples/master/api/petstore-full.json';
+let path = '/pets';
+let operation = 'post';
+let validator;
 
-    let api = 'https://raw.githubusercontent.com/subeeshcbabu/swaggerize-examples/master/api/petstore-full.json';
-    let validators;
-    /**
-     * Postive test case: Default: for path /pets and operation post
-     */
-    t.test('Validation for path /pets and operation post', assert => {
-        let path = '/pets';
-        let operation = 'post';
-        //Mock data
+Test.before('Validator for path /pets and operation post', () => {
+    validator = Validators({
+        api,
+        path,
+        operation
+    });
+    return validator;
+});
+
+Test('Validation for path /pets and operation post', t => {
+
+    //Mock data
+    let mock = {
+        id: -402127969058816,
+        category: {
+            id: -4945612667617280,
+            name: 'utXEG'
+        },
+        name: 'doggie',
+        photoUrls: [ 'KFIazYOx', 'rSAIQab' ],
+        tags: [
+            {
+                id: -8756358623002624,
+                name: 'iWD'
+            },
+            {
+                id: -2362820784029696,
+                name: 'BpzO'
+            }
+        ],
+        status: 'TFcPSI'
+    };
+
+    return validator.then(res => {
+        /**
+         * Validate response
+         */
+        let param = res[0];
+        //Validator Function
+        let validator = param.validator;
+        let resp = validator.call(null, mock);
+        t.truthy(resp, `OK Param Validation for ${path} - ${operation} - body`);
+        t.truthy(resp.status, 'OK validation status');
+        t.ifError(resp.errors, 'No validation errors');
+    });
+
+});
+
+/**
+ * Negative test case: for path /pets and operation post
+ */
+Test('Wrong input validation for path /pets and operation post', t => {
+
+    return validator.then(res => {
+        let param = res[0];
+        //Validator Function
+        let validator = param.validator;
+        //Empty input
+        let resp = validator.call(null, {});
+        t.false(resp.status, 'false validation status');
+        t.truthy(resp.errors, 'OK validation errors');
+        //Required check
         let mock = {
             id: -402127969058816,
             category: {
                 id: -4945612667617280,
                 name: 'utXEG'
-            },
-            name: 'doggie',
-            photoUrls: [ 'KFIazYOx', 'rSAIQab' ],
-            tags: [
-                {
-                    id: -8756358623002624,
-                    name: 'iWD'
-                },
-                {
-                    id: -2362820784029696,
-                    name: 'BpzO'
-                }
-            ],
-            status: 'TFcPSI'
+            }
         };
+        resp = validator.call(null, mock);
+        t.false(resp.status, 'false validation status');
+        t.truthy(resp.errors, 'OK validation errors');
 
-        validators = Validators({
-            api,
-            path,
-            operation
-        });
-        validators
-            .then(res => {
-                /**
-                 * Validate response
-                 */
-                let param = res[0];
-                //Validator Function
-                let validator = param.validator;
-                let resp = validator.call(null, mock);
-                assert.ok(resp, `OK Param Validation for ${path} - ${operation} - body`);
-                assert.ok(resp.status, 'OK validation status');
-                assert.error(resp.errors, 'No validation errors');
-                assert.end();
-            })
-            .catch(err => {
-                assert.error(err);
-                assert.end();
-            });
+        //Required check
+        mock = {
+            name: 'some name',
+            photoUrls: []
+        };
+        resp = validator.call(null, mock);
+        t.truthy(resp.status, 'OK validation status');
+        t.ifError(resp.errors, 'No validation errors');
     });
+});
 
-    /**
-     * Negative test case: for path /pets and operation post
-     */
-    t.test('Wrong input validation for path /pets and operation post', assert => {
-        let path = '/pets';
-        let operation = 'post';
-
-        validators = Validators({
-            api,
-            path,
-            operation
-        });
-        validators
-            .then(res => {
-
-                let param = res[0];
-                //Validator Function
-                let validator = param.validator;
-                //Empty input
-                let resp = validator.call(null, {});
-                assert.notOk(resp.status, 'false validation status');
-                assert.ok(resp.errors, 'OK validation errors');
-                //Required check
-                let mock = {
-                    id: -402127969058816,
-                    category: {
-                        id: -4945612667617280,
-                        name: 'utXEG'
-                    }
-                };
-                resp = validator.call(null, mock);
-                assert.notOk(resp.status, 'false validation status');
-                assert.ok(resp.errors, 'OK validation errors');
-
-                //Required check
-                mock = {
-                    name: 'some name',
-                    photoUrls: []
-                };
-                resp = validator.call(null, mock);
-                assert.ok(resp.status, 'OK validation status');
-                assert.error(resp.errors, 'No validation errors');
-
-                assert.end();
-
-            })
-            .catch(err => {
-                assert.error(err);
-                assert.end();
-            });
+/**
+ * Negative test case: No api
+ */
+Test('no api', t => {
+    return Validators({}).catch(err => {
+        t.truthy(err);
     });
-
-    /**
-     * Negative test case: No api
-     */
-    t.test('no api', assert => {
-        validators = Validators({});
-        validators
-            .catch(err => {
-                assert.ok(err);
-                assert.comment(err);
-                assert.end();
-            });
+});
+/**
+ * Negative test case: wrong api
+ */
+Test('wrong api', t => {
+    return Validators({
+        api: 'wrong api'
+    }).catch(err => {
+        t.truthy(err);
     });
-    /**
-     * Negative test case: wrong api
-     */
-    t.test('wrong api', assert => {
-        validators = Validators({
-            api: 'wrong api'
-        });
-        validators
-            .catch(err => {
-                assert.ok(err);
-                assert.comment(err);
-                assert.end();
-            });
-    });
+});
 
-    /**
-     * Negative test case: wrong path
-     */
-    t.test('wrong path', assert => {
-        validators = Validators({
-            api,
-            path: 'wrongpath'
-        });
-        validators
-            .catch(err => {
-                assert.ok(err);
-                assert.comment(err);
-                assert.end();
-            });
+/**
+ * Negative test case: wrong path
+ */
+Test('wrong path', t => {
+    return Validators({
+        api,
+        path: 'wrongpath'
+    }).catch(err => {
+        t.truthy(err);
+    });
+});
+
+/**
+ * Negative test case: wrong operation
+ */
+Test('wrong operation', t => {
+    return Validators({
+        api,
+        path,
+        operation: 'wrong operation'
+    }).catch(err => {
+        t.truthy(err);
     });
 });
