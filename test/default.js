@@ -1,13 +1,10 @@
 const Tape = require('tape');
 const Validators = require('../lib');
-const Swagmock = require('swagmock');
 
 Tape('Validators for a path and an operations', t => {
 
     let api = 'https://raw.githubusercontent.com/subeeshcbabu/swaggerize-examples/master/api/petstore-full.json';
     let validators;
-    let mockgen = Swagmock(api);
-
     /**
      * Postive test case: Default: for path /pets and operation post
      */
