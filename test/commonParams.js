@@ -31,7 +31,7 @@ Test('Validate merged parameters', t => {
                 let param = parameters[i];
                 let paramSpec = param.parameter;
                 //Validator Function
-                let validator = param.validator;
+                let validator = param.validate;
                 //Fetch the mock
                 let mockParams = mock['parameters'][paramSpec.in];
                 let mockParam;

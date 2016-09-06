@@ -45,7 +45,7 @@ Test('Validation for path /pets and operation post', t => {
          */
         let param = res[0];
         //Validator Function
-        let validator = param.validator;
+        let validator = param.validate;
         let resp = validator.call(null, mock);
         t.truthy(resp, `OK Param Validation for ${path} - ${operation} - body`);
         t.truthy(resp.status, 'OK validation status');
@@ -62,7 +62,7 @@ Test('Wrong input validation for path /pets and operation post', t => {
     return validator.then(res => {
         let param = res[0];
         //Validator Function
-        let validator = param.validator;
+        let validator = param.validate;
         //Empty input
         let resp = validator.call(null, {});
         t.false(resp.status, 'false validation status');

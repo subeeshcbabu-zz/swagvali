@@ -26,7 +26,7 @@ Test('Validators for all the paths', t => {
                         let param = parameters[i];
                         let paramSpec = param.parameter;
                         //Validator Function
-                        let validator = param.validator;
+                        let validator = param.validate;
                         //Fetch the mock
                         let mockParams = mock[path][operation]['parameters'][paramSpec.in];
                         let mockParam;
