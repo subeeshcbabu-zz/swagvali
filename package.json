@@ -1,7 +1,7 @@
 {
-  "name": "openapi-param-validator",
+  "name": "swagvali",
   "version": "1.0.0",
-  "description": "OpenApi (Swagger) request parameter validator ",
+  "description": "A module to build validators for OpenApi (Swagger) request parameters",
   "main": "lib/index.js",
   "scripts": {
     "test": "ava test/*.js --tap",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/subeeshcbabu/openapi-param-validator.git"
+    "url": "git+https://github.com/subeeshcbabu/swagvali.git"
   },
   "keywords": [
     "openapi",
@@ -24,9 +24,9 @@
   "author": "Subeesh Chothendavida",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/subeeshcbabu/openapi-param-validator/issues"
+    "url": "https://github.com/subeeshcbabu/swagvali/issues"
   },
-  "homepage": "https://github.com/subeeshcbabu/openapi-param-validator#readme",
+  "homepage": "https://github.com/subeeshcbabu/swagvali#readme",
   "dependencies": {
     "co": "^4.6.0",
     "is-my-json-valid": "^2.13.1",
