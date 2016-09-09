@@ -36,6 +36,7 @@
     "ava": "^0.16.0",
     "eslint": "^3.4.0",
     "istanbul": "^0.4.5",
+    "node-fetch": "^1.6.0",
     "swagmock": "0.0.3"
   }
 }
