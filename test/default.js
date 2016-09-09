@@ -50,6 +50,26 @@ Test('Validation for path /pets and operation post', t => {
         t.truthy(resp, `OK Param Validation for ${path} - ${operation} - body`);
         t.truthy(resp.status, 'OK validation status');
         t.ifError(resp.errors, 'No validation errors');
+        //Null input
+        resp = validator.call(null, null);
+        t.truthy(resp.status, 'Ok validation status');
+        t.ifError(resp.errors, 'No validation errors');
+        //Undefined input
+        resp = validator.call(null, undefined);
+        t.truthy(resp.status, 'Ok validation status');
+        t.ifError(resp.errors, 'No validation errors');
+        //Empty input
+        resp = validator.call(null, {});
+        t.truthy(resp.status, 'Ok validation status');
+        t.ifError(resp.errors, 'No validation errors');
+        //Required check
+        mock = {
+            name: 'some name',
+            photoUrls: []
+        };
+        resp = validator.call(null, mock);
+        t.truthy(resp.status, 'OK validation status');
+        t.ifError(resp.errors, 'No validation errors');
     });
 
 });
@@ -63,10 +83,6 @@ Test('Wrong input validation for path /pets and operation post', t => {
         let param = res[0];
         //Validator Function
         let validator = param.validate;
-        //Empty input
-        let resp = validator.call(null, {});
-        t.false(resp.status, 'false validation status');
-        t.truthy(resp.errors, 'OK validation errors');
         //Required check
         let mock = {
             id: -402127969058816,
@@ -75,18 +91,20 @@ Test('Wrong input validation for path /pets and operation post', t => {
                 name: 'utXEG'
             }
         };
-        resp = validator.call(null, mock);
-        t.false(resp.status, 'false validation status');
+        let resp = validator.call(null, mock);
+        t.false(resp.status, 'OK validation status');
         t.truthy(resp.errors, 'OK validation errors');
 
-        //Required check
-        mock = {
-            name: 'some name',
-            photoUrls: []
-        };
-        resp = validator.call(null, mock);
-        t.truthy(resp.status, 'OK validation status');
-        t.ifError(resp.errors, 'No validation errors');
+        //false input
+        resp = validator.call(null, false);
+        t.falsy(resp.status, 'OK validation status');
+        t.truthy(resp.errors, 'OK validation errors');
+
+        //true input
+        resp = validator.call(null, true);
+        t.falsy(resp.status, 'OK validation status');
+        t.truthy(resp.errors, 'OK validation errors');
+
     });
 });
 
