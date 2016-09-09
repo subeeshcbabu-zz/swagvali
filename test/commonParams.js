@@ -12,8 +12,7 @@ Test('Validate merged parameters', t => {
     let path = '/data';
     let operation = 'get';
 
-    return Validators({
-        api,
+    return Validators(api, {
         path,
         operation
     }).then(res => {

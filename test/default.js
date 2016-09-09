@@ -7,8 +7,7 @@ let operation = 'post';
 let validator;
 
 Test.before('Validator for path /pets and operation post', () => {
-    validator = Validators({
-        api,
+    validator = Validators(api, {
         path,
         operation
     });
@@ -112,7 +111,7 @@ Test('Wrong input validation for path /pets and operation post', t => {
  * Negative test case: No api
  */
 Test('no api', t => {
-    return Validators({}).catch(err => {
+    return Validators().catch(err => {
         t.truthy(err);
     });
 });
@@ -120,9 +119,7 @@ Test('no api', t => {
  * Negative test case: wrong api
  */
 Test('wrong api', t => {
-    return Validators({
-        api: 'wrong api'
-    }).catch(err => {
+    return Validators('wrong api', {}).catch(err => {
         t.truthy(err);
     });
 });
@@ -131,8 +128,7 @@ Test('wrong api', t => {
  * Negative test case: wrong path
  */
 Test('wrong path', t => {
-    return Validators({
-        api,
+    return Validators(api, {
         path: 'wrongpath'
     }).catch(err => {
         t.truthy(err);
@@ -143,8 +139,7 @@ Test('wrong path', t => {
  * Negative test case: wrong operation
  */
 Test('wrong operation', t => {
-    return Validators({
-        api,
+    return Validators(api, {
         path,
         operation: 'wrong operation'
     }).catch(err => {

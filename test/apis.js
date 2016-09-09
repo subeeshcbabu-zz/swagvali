@@ -30,7 +30,7 @@ const parameters = (api) => {
 };
 
 const validator = (api, t) => {
-    return Promise.all([ Validators({ api }), parameters(api) ]).then(resolved => {
+    return Promise.all([ Validators(api), parameters(api) ]).then(resolved => {
         const [ validators, mocks ] = resolved;
         Object.keys(validators).forEach(path => {
             let pathObj = validators[path];
@@ -79,7 +79,7 @@ Test('real world apis', t => {
     return Co(function* () {
         let list = yield Fetch('https://s3.amazonaws.com/api.apis.guru/v2/list.json').then(res => res.json());
         let apis = Object.keys(list)
-            .slice(30, 80)
+            .slice(40, 50)
             .filter((api, i) => (!Ignorelist.includes(api)))
             .map(api => {
                 let versions =  Object.keys(list[api].versions);

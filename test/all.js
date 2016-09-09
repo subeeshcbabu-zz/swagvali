@@ -8,9 +8,7 @@ Test('Validators for all the paths', t => {
     let api = 'https://raw.githubusercontent.com/subeeshcbabu/swaggerize-examples/master/api/petstore-full.json';
     let mockgen = Swagmock(api);
 
-    return Validators({
-        api
-    }).then(res => {
+    return Validators(api).then(res => {
         /**
          * Validate response
          */

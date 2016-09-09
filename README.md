@@ -1,2 +1,2 @@
-# openapi-param-validator
-OpenApi (Swagger) parameter validator module
+# swagvali
+A module to build validators for Swagger(OpenApi) request parameters.
