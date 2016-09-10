@@ -1,37 +1,37 @@
 const Test = require('ava');
 const Validators = require('../lib');
 const Swagmock = require('swagmock');
+const Parser = require('swagger-parser');
 const Fetch = require('node-fetch');
 const Co = require('co');
 const Ignorelist = [
     'azure.com:arm-web',
-    'citrixonline.com:scim',
-    'citrixonline.com:gotomeeting',
     'bbc.com',
     'bbci.co.uk',
-    'botify.com',
     'bbryiot.com',
-    'firebrowse.org',
-    'getsandbox.com',
-    'versioneye.com',
-    'gettyimages.com',
-    'googleapis.com:adsense',
-    'motaword.com',
-    'uploady.com',
-    'watchful.li'
+    'citrixonline.com:scim', //Parser validation issues
+    'firebrowse.org',//Wrong enum values with format=date
+    'getsandbox.com',//`is-my-json-valid` fails to create a validator(Out of memory)
+    'gettyimages.com', //Wrong enum definition. enum as a type=array
+    'github.com', //Missing type=string for enums
+    'googleapis.com:adsense',//Parser validation issues
+    'motaword.com',//Parser validation issues
+    'uploady.com',//Parser validation issues
+    'versioneye.com',//Parser validation issues
+    'watchful.li'//Parser validation issues
 ];
 
-const parameters = (api) => {
-    return new Promise ((resolve, reject) => {
-        Swagmock(api).parameters({}, (error, mock) => {
-            error ? reject(error) : resolve(mock);
-        });
-    });
-};
-
 const validator = (api, t) => {
-    return Promise.all([ Validators(api), parameters(api) ]).then(resolved => {
+
+    return Promise.all([
+        Validators(api, { validated: true }),
+        Swagmock(api, { validated : true }).parameters({})
+    ]).then(resolved => {
         const [ validators, mocks ] = resolved;
+        let result = {
+            title: api.info.title,
+            errors: []
+        };
         Object.keys(validators).forEach(path => {
             let pathObj = validators[path];
             Object.keys(pathObj).forEach(operation => {
@@ -63,31 +63,43 @@ const validator = (api, t) => {
                         }
                         if (mockParam) {
                             let resp = validator.call(null, mockParam && mockParam.value);
+                            if (resp && resp.errors && resp.errors.length > 0) {
+                                result.errors.push(resp.errors);
+                                console.log(`validation error for ` , result.title);
+                                console.log(`input:`, mockParam && mockParam.value);
+                                console.log(`schema: `, paramSpec);
+                                console.log(resp.errors);
+                            }
                             t.truthy(resp, `${api} OK Param Validation for ${path} - ${operation} - ${paramSpec.name}`);
                             t.truthy(resp.status, `${api} OK validation status`);
                             t.is(resp.errors, null, `${api} No validation errors`);
+
                         }
                     }
                 }
             });
         });
-        return api;
+        return result;
     });
 };
 
 Test('real world apis', t => {
     return Co(function* () {
         let list = yield Fetch('https://s3.amazonaws.com/api.apis.guru/v2/list.json').then(res => res.json());
+        console.log(" APIs: ");
         let apis = Object.keys(list)
-            .slice(40, 50)
+            .slice(40, 80)
             .filter((api, i) => (!Ignorelist.includes(api)))
             .map(api => {
                 let versions =  Object.keys(list[api].versions);
                 let lastVersion = versions[versions.length - 1];
                 let swaggerUrl = list[api].versions[lastVersion].swaggerUrl;
-                return validator(swaggerUrl, t);
+                console.log(swaggerUrl);
+                return Parser.validate(swaggerUrl);
             });
 
-        return yield apis;
-    }).then(apis => console.log(apis));
+        let apiObjs = yield apis;
+        console.log(" Validating APIs ");
+        return yield apiObjs.map(api => validator(api, t));
+    }).then(result => console.log(result));
 });
