@@ -1,7 +1,9 @@
 const Test = require('ava');
+const Parser = require('swagger-parser');
 const Validators = require('../lib');
+const ValidatorUtil = require('../testutils');
 
-let api = 'https://raw.githubusercontent.com/subeeshcbabu/swaggerize-examples/master/api/petstore-full.json';
+const api = 'https://raw.githubusercontent.com/subeeshcbabu/swaggerize-examples/master/api/petstore-full.json';
 let path = '/pets';
 let operation = 'post';
 let validator;
@@ -145,4 +147,9 @@ Test('wrong operation', t => {
     }).catch(err => {
         t.truthy(err);
     });
+});
+
+Test('Validators for all the paths', t => {
+
+    return ValidatorUtil(Parser.validate(api), t);
 });
