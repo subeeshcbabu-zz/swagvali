@@ -37,6 +37,6 @@
     "eslint": "^3.4.0",
     "istanbul": "^0.4.5",
     "node-fetch": "^1.6.0",
-    "swagmock": "subii/swagmock#v1.x"
+    "swagmock": "1.0.0-alpha.1"
   }
 }
