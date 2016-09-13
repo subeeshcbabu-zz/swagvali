@@ -15,7 +15,19 @@ const Ignorelist = [
     'gettyimages.com', //Wrong enum definition. enum as a type=array
     'github.com', //Missing type=string for enums
     'googleapis.com:adsense',//Parser validation issues
+    'googleapis.com:consumersurveys',//`is-my-json-valid` fails to create a validator(Out of memory)
+    'googleapis.com:dataflow',
+    'googleapis.com:datastore',
+    'googleapis.com:gmail',
+    'googleapis.com:servicemanagement',
+    'googleapis.com:tagmanager',
+    'jirafe.com',//Max range for numbers
     'motaword.com',//Parser validation issues
+    'patientview.org',//`is-my-json-valid` fails to create a validator(Out of memory)
+    'pushpay.com',//`is-my-json-valid` fails to create a validator(Out of memory)
+    'rebilly.com',//wrong items def for type array
+    'simplyrets.com',//Wrong enum definition. enum as a type=array
+    'stackexchange.com',// Wrong enum definition. type=string, but enum has boolean values
     'uploady.com',//Parser validation issues
     'versioneye.com',//Parser validation issues
     'watchful.li'//Parser validation issues
@@ -65,14 +77,16 @@ const validator = (api, t) => {
                             let resp = validator.call(null, mockParam && mockParam.value);
                             if (resp && resp.errors && resp.errors.length > 0) {
                                 result.errors.push(resp.errors);
-                                console.log(`validation error for ` , result.title);
-                                console.log(`input:`, mockParam && mockParam.value);
-                                console.log(`schema: `, paramSpec);
+                                /* eslint-disable no-console */
+                                console.log('validation error for ' , result.title);
+                                console.log('input:', mockParam && mockParam.value);
+                                console.log('schema: ', paramSpec);
                                 console.log(resp.errors);
+                                /* eslint-disable no-console */
                             }
                             t.truthy(resp, `${api} OK Param Validation for ${path} - ${operation} - ${paramSpec.name}`);
                             t.truthy(resp.status, `${api} OK validation status`);
-                            t.is(resp.errors, null, `${api} No validation errors`);
+                            t.falsy(resp.errors, `${api} No validation errors`);
 
                         }
                     }
@@ -86,20 +100,26 @@ const validator = (api, t) => {
 Test('real world apis', t => {
     return Co(function* () {
         let list = yield Fetch('https://s3.amazonaws.com/api.apis.guru/v2/list.json').then(res => res.json());
-        console.log(" APIs: ");
+        /* eslint-disable no-console */
+        console.log('APIs: ' );
+        /* eslint-disable no-console */
         let apis = Object.keys(list)
-            .slice(40, 80)
-            .filter((api, i) => (!Ignorelist.includes(api)))
+            .slice(200)
+            .filter((api) => (!Ignorelist.includes(api)))
             .map(api => {
                 let versions =  Object.keys(list[api].versions);
                 let lastVersion = versions[versions.length - 1];
                 let swaggerUrl = list[api].versions[lastVersion].swaggerUrl;
+                /* eslint-disable no-console */
                 console.log(swaggerUrl);
+                /* eslint-disable no-console */
                 return Parser.validate(swaggerUrl);
             });
 
         let apiObjs = yield apis;
-        console.log(" Validating APIs ");
+        /* eslint-disable no-console */
+        console.log('Validating APIs... ');
+        /* eslint-disable no-console */
         return yield apiObjs.map(api => validator(api, t));
     }).then(result => console.log(result));
 });
