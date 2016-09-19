@@ -20,7 +20,7 @@ Test('Validate merged parameters', t => {
          * Validate response
          */
         mockgen.parameters({path, operation}, function (error, mock) {
-            let parameters = res;
+            let parameters = res.parameters;
 
             if (!parameters) {
                 return;
@@ -28,7 +28,7 @@ Test('Validate merged parameters', t => {
             for (let i = 0; i < parameters.length; i++) {
 
                 let param = parameters[i];
-                let paramSpec = param.parameter;
+                let paramSpec = param.spec;
                 //Validator Function
                 let validator = param.validate;
                 //Fetch the mock

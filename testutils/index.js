@@ -26,7 +26,7 @@ const validator = (api, t) => {
                 for (let i = 0; i < parameters.length; i++) {
 
                     let param = parameters[i];
-                    let paramSpec = param.parameter;
+                    let paramSpec = param.spec;
                     //Validator Function
                     let validator = param.validate;
                     //Fetch the mock

@@ -1,7 +1,7 @@
 {
   "name": "swagvali",
   "version": "1.0.0",
-  "description": "A module to build validators for OpenApi (Swagger) request parameters",
+  "description": "A module to build validators for OpenApi (Swagger) Request parameters and Response objects",
   "main": "lib/index.js",
   "scripts": {
     "test": "ava test/*.js --tap",

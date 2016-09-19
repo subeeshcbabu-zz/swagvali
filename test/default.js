@@ -8,7 +8,7 @@ let path = '/pets';
 let operation = 'post';
 let validator;
 
-Test.before('Validator for path /pets and operation post', () => {
+Test('Validator for path /pets and operation post', () => {
     validator = Validators(api, {
         path,
         operation
@@ -44,7 +44,7 @@ Test('Validation for path /pets and operation post', t => {
         /**
          * Validate response
          */
-        let param = res[0];
+        let param = res.parameters[0];
         //Validator Function
         let validator = param.validate;
         let resp = validator.call(null, mock);
@@ -81,7 +81,7 @@ Test('Validation for path /pets and operation post', t => {
 Test('Wrong input validation for path /pets and operation post', t => {
 
     return validator.then(res => {
-        let param = res[0];
+        let param = res.parameters[0];
         //Validator Function
         let validator = param.validate;
         //Required check
