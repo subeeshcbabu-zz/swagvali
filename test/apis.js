@@ -11,7 +11,7 @@ Test('real world apis', t => {
     return Co(function* () {
         let list = yield Fetch(ApiRegistry).then(res => res.json());
         let apis = Object.keys(list)
-            .slice(100, 110)
+            .slice(200, 220)
             .filter((api) => (!Ignorelist.includes(api)))
             .map(api => {
                 let versions =  Object.keys(list[api].versions);
