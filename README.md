@@ -1,6 +1,8 @@
 # swagvali
 A module to build validators for Swagger(OpenApi) Request parameters and Response objects.
 
+[![Tested on APIs.guru](http://api.apis.guru/badges/tested_on.svg)](https://APIs.guru)
+
 ## Install
 
 ```
