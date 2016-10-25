@@ -29,7 +29,7 @@
   "homepage": "https://github.com/subeeshcbabu/swagvali#readme",
   "dependencies": {
     "co": "^4.6.0",
-    "is-my-json-valid": "^2.13.1",
+    "is-my-json-valid": "subeeshcbabu/is-my-json-valid",
     "swagger-parser": "^3.4.1"
   },
   "devDependencies": {
@@ -37,6 +37,6 @@
     "eslint": "^3.4.0",
     "istanbul": "^0.4.5",
     "node-fetch": "^1.6.0",
-    "swagmock": "1.0.0-alpha.1"
+    "swagmock": "^1.0.0"
   }
 }
