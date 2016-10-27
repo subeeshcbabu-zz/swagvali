@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/subeeshcbabu/swagvali.git"
   },
+  "engines" : {
+    "node" : "6"
+  },
   "keywords": [
     "openapi",
     "swagger",
