@@ -12,8 +12,8 @@
     "type": "git",
     "url": "git+https://github.com/subeeshcbabu/swagvali.git"
   },
-  "engines" : {
-    "node" : "6"
+  "engines": {
+    "node": "6"
   },
   "keywords": [
     "openapi",
@@ -32,6 +32,7 @@
   "homepage": "https://github.com/subeeshcbabu/swagvali#readme",
   "dependencies": {
     "co": "^4.6.0",
+    "enjoi": "^2.1.0",
     "is-my-json-valid": "subeeshcbabu/is-my-json-valid",
     "swagger-parser": "^3.4.1"
   },

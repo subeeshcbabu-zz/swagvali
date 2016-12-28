@@ -8,16 +8,7 @@ let path = '/pets';
 let operation = 'post';
 let validator;
 
-Test('Validator for path /pets and operation post', () => {
-    validator = Validators(api, {
-        path,
-        operation
-    });
-    return validator;
-});
-
-Test('Validation for path /pets and operation post', t => {
-
+function validateSuccess(t, validator) {
     //Mock data
     let mock = {
         id: -402127969058816,
@@ -72,7 +63,27 @@ Test('Validation for path /pets and operation post', t => {
         t.truthy(resp.status, 'OK validation status');
         t.ifError(resp.errors, 'No validation errors');
     });
+}
 
+Test('JOI schema Validator for path /pets and operation post', t => {
+
+    validator = Validators(api, {
+        path,
+        operation,
+        joischema: true
+    });
+
+    return validateSuccess(t, validator);
+});
+
+Test('JSON schema Validator for path /pets and operation post', t => {
+
+    validator = Validators(api, {
+        path,
+        operation
+    });
+
+    return validateSuccess(t, validator);
 });
 
 /**
