@@ -1,9 +1,11 @@
+const Path = require('path');
 const Test = require('ava');
 const Parser = require('swagger-parser');
 const Validators = require('../lib');
 const ValidatorUtil = require('../testutils');
 
 const api = 'https://raw.githubusercontent.com/subeeshcbabu/swaggerize-examples/master/api/petstore-full.json';
+const localApi = Path.resolve(__dirname, 'fixture/petstore.json');
 let path = '/pets';
 let operation = 'post';
 let validator;
@@ -84,6 +86,39 @@ Test('JSON schema Validator for path /pets and operation post', t => {
     });
 
     return validateSuccess(t, validator);
+});
+
+Test('Local api file', t => {
+    let parsed = Parser.validate(localApi);
+    let vali = Validators(parsed, {
+        validated: true
+    });
+
+    return vali.then(validators => {
+        //Test /pet/findByStatus - collectionFormat- cvs - (Required = true)
+        let subject = validators['/pet/findByStatus'].get.parameters[0];
+        let mock;
+        // Undefined data
+        let result = subject.validate(mock);
+        t.false(result.status, 'OK validation status');
+        t.truthy(result.errors, 'OK validation errors');
+        // Null data
+        mock = null;
+        result = subject.validate(mock);
+        t.false(result.status, 'OK validation status');
+        t.truthy(result.errors, 'OK validation errors');
+        //Wrong data
+        mock = {};
+        result = subject.validate(mock);
+        t.false(result.status, 'OK validation status');
+        t.truthy(result.errors, 'OK validation errors');
+        //Correct data
+        mock = 'available,pending';
+        result = subject.validate(mock);
+        t.true(result.status, 'OK validation status');
+        t.falsy(result.errors, 'OK validation errors');
+    });
+
 });
 
 /**
