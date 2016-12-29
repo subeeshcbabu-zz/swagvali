@@ -112,8 +112,37 @@ Test('Local api file', t => {
         result = subject.validate(mock);
         t.false(result.status, 'OK validation status');
         t.truthy(result.errors, 'OK validation errors');
+        //Wrong data
+        mock = 'abc,def';
+        result = subject.validate(mock);
+        t.false(result.status, 'OK validation status');
+        t.truthy(result.errors, 'OK validation errors');
         //Correct data
         mock = 'available,pending';
+        result = subject.validate(mock);
+        t.true(result.status, 'OK validation status');
+        t.falsy(result.errors, 'OK validation errors');
+
+        //Test /pet/findByTags - collectionFormat- cvs - (Required = false)
+        subject = validators['/pet/findByTags'].get.parameters[0];
+        // Undefined data
+        mock = undefined;
+        result = subject.validate(mock);
+        //If required = false, then the data can be undefined.
+        t.true(result.status, 'OK validation status');
+        t.falsy(result.errors, 'OK validation errors');
+        mock = null;
+        result = subject.validate(mock);
+        //If required = false, then the data can be null.
+        t.true(result.status, 'OK validation status');
+        t.falsy(result.errors, 'OK validation errors');
+        //Wrong data
+        mock = {};
+        result = subject.validate(mock);
+        t.false(result.status, 'OK validation status');
+        t.truthy(result.errors, 'OK validation errors');
+        //Correct data
+        mock = 'something,somethingelse';
         result = subject.validate(mock);
         t.true(result.status, 'OK validation status');
         t.falsy(result.errors, 'OK validation errors');
