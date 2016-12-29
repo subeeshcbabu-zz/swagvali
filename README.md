@@ -92,7 +92,7 @@ The `Swagvali` api generates a validator object for each parameter or response d
 
 - `spec` - (*Object*) - The spec of the parameter or the response.
 
-- `validate` - (*Function*) - `function (data)` - The validate function that accepts the `data` to be validated. The validate function uses [is-my-json-valid](https://github.com/mafintosh/is-my-json-valid) validator by default. If the `joischema` option was set to `true`, the validator function uses Joi](https://github.com/hapijs/joi) schema validator.
+- `validate` - (*Function*) - `function (data)` - The validate function that accepts the `data` to be validated. The validate function uses [is-my-json-valid](https://github.com/mafintosh/is-my-json-valid) validator by default. If the `joischema` option was set to `true`, the validator function uses [Joi](https://github.com/hapijs/joi) schema validator.
 
 - `joischema` - (*Object*) - The `Joi` schema object, if the `joischema` option was set as `true`. Otherwise this will be `undefined`.
 
