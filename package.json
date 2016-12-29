@@ -4,9 +4,9 @@
   "description": "A module to build validators for OpenApi (Swagger) Request parameters and Response objects",
   "main": "lib/index.js",
   "scripts": {
-    "test": "ava test/*.js --tap",
+    "test": "npm run list && ava test/*.js --tap",
     "lint": "eslint .",
-    "cover": "istanbul cover ava -- test/*.js --tap"
+    "cover": "npm run list && istanbul cover ava -- test/*.js --tap"
   },
   "repository": {
     "type": "git",
