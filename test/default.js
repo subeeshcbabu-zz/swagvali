@@ -146,6 +146,30 @@ Test('Local api file', t => {
         result = subject.validate(mock);
         t.true(result.status, 'OK validation status');
         t.falsy(result.errors, 'OK validation errors');
+
+        //Test /store/order/{orderId} - integer type
+        subject = validators['/store/order/{orderId}'].get.parameters[0];
+        // Undefined data
+        mock = undefined;
+        result = subject.validate(mock);
+        //If required = true, then the data cannot be undefined.
+        t.false(result.status, 'OK validation status');
+        t.truthy(result.errors, 'OK validation errors');
+        //Wrong data
+        mock = 'notanumber';
+        result = subject.validate(mock);
+        t.false(result.status, 'OK validation status');
+        t.truthy(result.errors, 'OK validation errors');
+        //wrong data
+        mock = '12345';
+        result = subject.validate(mock);
+        t.false(result.status, 'OK validation status');
+        t.truthy(result.errors, 'OK validation errors');
+        //Correct data
+        mock = '6'; // Should be between 0 and 10. Should be multiple of 2.
+        result = subject.validate(mock);
+        t.true(result.status, 'OK validation status');
+        t.falsy(result.errors, 'OK validation errors');
     });
 
 });
