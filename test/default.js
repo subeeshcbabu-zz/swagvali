@@ -19,7 +19,7 @@ function validateSuccess(t, validator) {
             name: 'utXEG'
         },
         name: 'doggie',
-        photoUrls: [ 'KFIazYOx', 'rSAIQab' ],
+        photoUrls: ['KFIazYOx', 'rSAIQab'],
         tags: [
             {
                 id: -8756358623002624,
@@ -43,19 +43,19 @@ function validateSuccess(t, validator) {
         let resp = validator.call(null, mock);
         t.truthy(resp, `OK Param Validation for ${path} - ${operation} - body`);
         t.truthy(resp.status, 'OK validation status');
-        t.ifError(resp.errors, 'No validation errors');
+        t.falsy(resp.errors, 'No validation errors');
         //Null input
         resp = validator.call(null, null);
         t.truthy(resp.status, 'Ok validation status');
-        t.ifError(resp.errors, 'No validation errors');
+        t.falsy(resp.errors, 'No validation errors');
         //Undefined input
         resp = validator.call(null, undefined);
         t.truthy(resp.status, 'Ok validation status');
-        t.ifError(resp.errors, 'No validation errors');
+        t.falsy(resp.errors, 'No validation errors');
         //Empty input
         resp = validator.call(null, {});
         t.truthy(resp.status, 'Ok validation status');
-        t.ifError(resp.errors, 'No validation errors');
+        t.falsy(resp.errors, 'No validation errors');
         //Required check
         mock = {
             name: 'some name',
@@ -63,7 +63,7 @@ function validateSuccess(t, validator) {
         };
         resp = validator.call(null, mock);
         t.truthy(resp.status, 'OK validation status');
-        t.ifError(resp.errors, 'No validation errors');
+        t.falsy(resp.errors, 'No validation errors');
     });
 }
 
